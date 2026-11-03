@@ -1,0 +1,36 @@
+{
+  "total_records": 1200,
+  "features_count": 15,
+  "missing_values": {
+    "study_hours_weekly": 2.5,
+    "assignment_avg_score": 2.0,
+    "class_participation_score": 1.5
+  },
+  "outlier_counts": {
+    "attendance_rate": 0,
+    "study_hours_weekly": 27,
+    "previous_exam_marks": 9,
+    "assignment_completion_rate": 3,
+    "assignment_avg_score": 8,
+    "class_participation_score": 1,
+    "sleep_hours_daily": 4,
+    "final_exam_marks": 10
+  },
+  "correlations_with_target": {
+    "final_exam_marks": 1.0,
+    "assignment_avg_score": 0.7615,
+    "previous_exam_marks": 0.7122,
+    "study_hours_weekly": 0.64,
+    "assignment_completion_rate": 0.596,
+    "attendance_rate": 0.416,
+    "class_participation_score": 0.3705,
+    "sleep_hours_daily": -0.0161
+  },
+  "figures_generated": [
+    "eda_1_target_distribution.png",
+    "eda_2_correlation_matrix.png",
+    "eda_3_key_relationships.png",
+    "eda_4_categorical_comparisons.png",
+    "eda_5_sleep_vs_performance.png"
+  ]
+}

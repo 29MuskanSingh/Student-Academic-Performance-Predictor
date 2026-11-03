@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Academic Performance Predictor</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root {
+      --primary-color: #1e3a8a;
+      --secondary-color: #3b82f6;
+      --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    }
+    body {
+      background: var(--bg-gradient);
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+    }
+    .hero-header {
+      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+      color: white;
+      padding: 2.2rem 1rem;
+      border-radius: 0 0 1.5rem 1.5rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+      margin-bottom: 2rem;
+    }
+    .card {
+      border: none;
+      border-radius: 1rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    }
+    .score-circle {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      border: 6px solid #3b82f6;
+      background: #eff6ff;
+    }
+    .badge-tier {
+      font-size: 1.1rem;
+      padding: 0.5rem 1.2rem;
+      border-radius: 2rem;
+    }
+    .form-label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #334155;
+    }
+    .value-badge {
+      float: right;
+      font-weight: 700;
+      color: #2563eb;
+    }
+    .nav-pills .nav-link.active {
+      background-color: #2563eb;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="hero-header text-center">
+    <div class="container">
+      <h1 class="display-6 fw-bold mb-2"><i class="bi bi-mortarboard-fill me-2"></i> Student Academic Performance Predictor</h1>
+      <p class="lead mb-0 text-white-50">Machine Learning Intelligence System for Academic &amp; Behavioural Performance Analytics</p>
+    </div>
+  </header>
+
+  <div class="container pb-5">
+    <!-- Navigation Tabs -->
+    <ul class="nav nav-pills justify-content-center mb-4" id="mainTabs" role="tablist">
+      <li class="nav-item">
+        <button class="nav-link active fw-semibold" id="predictor-tab" data-bs-toggle="pill" data-bs-target="#predictor" type="button" role="tab">
+          <i class="bi bi-cpu me-1"></i> Interactive Predictor
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link fw-semibold" id="model-tab" data-bs-toggle="pill" data-bs-target="#model-info" type="button" role="tab">
+          <i class="bi bi-bar-chart-line me-1"></i> Model Metrics &amp; Drivers
+        </button>
+      </li>
+    </ul>
+
+    <div class="tab-content" id="mainTabsContent">
+      <!-- TAB 1: PREDICTOR -->
+      <div class="tab-pane fade show active" id="predictor" role="tabpanel">
+        <div class="row g-4">
+          
+          <!-- Input Form Column -->
+          <div class="col-lg-7">
+            <div class="card p-4">
+              <h5 class="card-title fw-bold text-primary mb-3">
+                <i class="bi bi-sliders me-2"></i> Student Attributes &amp; Behavioral Factors
+              </h5>
+              <form id="predictionForm">
+                
+                <div class="row g-3">
+                  <!-- Attendance -->
+                  <div class="col-md-6">
+                    <label class="form-label">Attendance Rate (%) <span id="val_attendance" class="value-badge">85%</span></label>
+                    <input type="range" class="form-range" id="attendance_rate" name="attendance_rate" min="50" max="100" value="85" step="0.5" oninput="updateVal('attendance', this.value, '%')">
+                  </div>
+
+                  <!-- Weekly Study Hours -->
+                  <div class="col-md-6">
+                    <label class="form-label">Weekly Study Hours <span id="val_study" class="value-badge">14 hrs</span></label>
+                    <input type="range" class="form-range" id="study_hours_weekly" name="study_hours_weekly" min="2" max="35" value="14" step="0.5" oninput="updateVal('study', this.value, ' hrs')">
+                  </div>
+
+                  <!-- Previous Exam Marks -->
+                  <div class="col-md-6">
+                    <label class="form-label">Previous Exam Marks (0-100) <span id="val_prev" class="value-badge">72</span></label>
+                    <input type="range" class="form-range" id="previous_exam_marks" name="previous_exam_marks" min="25" max="100" value="72" step="0.5" oninput="updateVal('prev', this.value, '')">
+                  </div>
+
+                  <!-- Assignment Average Score -->
+                  <div class="col-md-6">
+                    <label class="form-label">Assignment Average (0-100) <span id="val_assign_score" class="value-badge">75</span></label>
+                    <input type="range" class="form-range" id="assignment_avg_score" name="assignment_avg_score" min="20" max="100" value="75" step="0.5" oninput="updateVal('assign_score', this.value, '')">
+                  </div>
+
+                  <!-- Assignment Completion Rate -->
+                  <div class="col-md-6">
+                    <label class="form-label">Assignment Completion (%) <span id="val_assign_comp" class="value-badge">90%</span></label>
+                    <input type="range" class="form-range" id="assignment_completion_rate" name="assignment_completion_rate" min="40" max="100" value="90" step="1" oninput="updateVal('assign_comp', this.value, '%')">
+                  </div>
+
+                  <!-- Class Participation -->
+                  <div class="col-md-6">
+                    <label class="form-label">Class Participation (1-10) <span id="val_part" class="value-badge">7</span></label>
+                    <input type="range" class="form-range" id="class_participation_score" name="class_participation_score" min="1" max="10" value="7" step="1" oninput="updateVal('part', this.value, '')">
+                  </div>
+
+                  <!-- Sleep Hours -->
+                  <div class="col-md-6">
+                    <label class="form-label">Daily Sleep (Hours) <span id="val_sleep" class="value-badge">7.5 hrs</span></label>
+                    <input type="range" class="form-range" id="sleep_hours_daily" name="sleep_hours_daily" min="4" max="10" value="7.5" step="0.5" oninput="updateVal('sleep', this.value, ' hrs')">
+                  </div>
+
+                  <!-- Stress Level -->
+                  <div class="col-md-6">
+                    <label class="form-label">Perceived Stress Level</label>
+                    <select class="form-select" id="stress_level" name="stress_level">
+                      <option value="Low">Low (Calm &amp; Focused)</option>
+                      <option value="Medium" selected>Medium (Moderate Pressure)</option>
+                      <option value="High">High (Elevated Exam Anxiety)</option>
+                    </select>
+                  </div>
+
+                  <!-- Parent Education -->
+                  <div class="col-md-6">
+                    <label class="form-label">Parent Education Level</label>
+                    <select class="form-select" id="parent_education_level" name="parent_education_level">
+                      <option value="High School">High School</option>
+                      <option value="Diploma">Diploma / Associate</option>
+                      <option value="Bachelor" selected>Bachelor's Degree</option>
+                      <option value="Postgraduate">Postgraduate Degree</option>
+                    </select>
+                  </div>
+
+                  <!-- Tutoring Support -->
+                  <div class="col-md-6">
+                    <label class="form-label">Tutoring / Mentorship Support</label>
+                    <select class="form-select" id="tutoring_support" name="tutoring_support">
+                      <option value="No" selected>No</option>
+                      <option value="Yes">Yes (Active Tutoring)</option>
+                    </select>
+                  </div>
+
+                  <!-- Extracurricular Activities -->
+                  <div class="col-md-6">
+                    <label class="form-label">Extracurricular Activities</label>
+                    <select class="form-select" id="extracurricular_activities" name="extracurricular_activities">
+                      <option value="Yes" selected>Yes (Sports/Clubs)</option>
+                      <option value="No">No</option>
+                    </select>
+                  </div>
+
+                  <!-- Internet Access -->
+                  <div class="col-md-6">
+                    <label class="form-label">Home Internet Access</label>
+                    <select class="form-select" id="internet_access" name="internet_access">
+                      <option value="Yes" selected>Yes</option>
+                      <option value="No">No</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="mt-4 text-center">
+                  <button type="button" class="btn btn-primary btn-lg px-5 shadow-sm fw-bold" onclick="runPrediction()">
+                    <i class="bi bi-magic me-2"></i> Predict Expected Marks
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Prediction Result Column -->
+          <div class="col-lg-5">
+            <div class="card p-4 text-center h-100">
+              <h5 class="card-title fw-bold text-secondary mb-3">Predicted Academic Standing</h5>
+              
+              <div class="score-circle my-2 shadow-sm" id="scoreCircle">
+                <span class="fs-1 fw-bold text-dark" id="displayScore">--</span>
+                <span class="text-muted small">Out of 100</span>
+              </div>
+
+              <div>
+                <span class="badge bg-secondary badge-tier" id="displayTier">Awaiting Input</span>
+              </div>
+              
+              <p class="text-muted mt-2 mb-3" id="displayRange">
+                <i class="bi bi-shield-check me-1"></i> 95% Confidence Interval: <strong id="rangeText">--</strong>
+              </p>
+
+              <hr>
+
+              <div class="text-start">
+                <h6 class="fw-bold text-dark mb-2"><i class="bi bi-lightbulb-fill text-warning me-1"></i> Personalized Diagnostic Guidance:</h6>
+                <ul class="list-group list-group-flush small" id="recommendationsList">
+                  <li class="list-group-item text-muted">Adjust student parameters on the left and click "Predict Expected Marks" to generate customized recommendations.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TAB 2: MODEL METRICS & DRIVERS -->
+      <div class="tab-pane fade" id="model-info" role="tabpanel">
+        <div class="row g-4">
+          <div class="col-lg-6">
+            <div class="card p-4">
+              <h5 class="fw-bold text-primary mb-3"><i class="bi bi-award-fill me-2"></i> Model Benchmark Comparison</h5>
+              <p class="text-muted small">Comparison of 6 candidate algorithms evaluated on held-out test data (20% split) using 5-Fold Cross Validation.</p>
+              
+              <div class="table-responsive">
+                <table class="table table-hover table-bordered align-middle text-center small">
+                  <thead class="table-light">
+                    <tr>
+                      <th class="text-start">Algorithm</th>
+                      <th>CV R²</th>
+                      <th>Test MAE</th>
+                      <th>Test R²</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="table-primary fw-bold">
+                      <td class="text-start"><i class="bi bi-check-circle-fill text-success me-1"></i> Linear Regression</td>
+                      <td>0.814</td>
+                      <td>3.27 marks</td>
+                      <td>0.867</td>
+                    </tr>
+                    <tr>
+                      <td class="text-start">Ridge Regression (L2)</td>
+                      <td>0.814</td>
+                      <td>3.27 marks</td>
+                      <td>0.867</td>
+                    </tr>
+                    <tr>
+                      <td class="text-start">Gradient Boosting</td>
+                      <td>0.787</td>
+                      <td>3.80 marks</td>
+                      <td>0.825</td>
+                    </tr>
+                    <tr>
+                      <td class="text-start">Random Forest Regressor</td>
+                      <td>0.749</td>
+                      <td>4.24 marks</td>
+                      <td>0.788</td>
+                    </tr>
+                    <tr>
+                      <td class="text-start">Decision Tree Regressor</td>
+                      <td>0.571</td>
+                      <td>5.45 marks</td>
+                      <td>0.636</td>
+                    </tr>
+                    <tr class="text-muted">
+                      <td class="text-start">Baseline (Mean Predictor)</td>
+                      <td>-0.004</td>
+                      <td>8.89 marks</td>
+                      <td>-0.006</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="small text-muted mb-0">
+                <strong>Key Finding:</strong> Linear and Regularized Ridge models deliver the strongest generalization (R² ~ 0.867, MAE ~ 3.27 marks), successfully capturing the additive interaction of study effort, baseline aptitude, and attendance.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="card p-4">
+              <h5 class="fw-bold text-primary mb-3"><i class="bi bi-lightning-charge-fill me-2"></i> Top Driving Factors</h5>
+              <p class="text-muted small">Permutation Importance scores on test data measuring drop in performance when feature values are permuted.</p>
+              
+              <div class="mb-3">
+                <div class="d-flex justify-content-between small fw-bold mb-1">
+                  <span>Weekly Study Hours</span>
+                  <span>Importance: 0.276</span>
+                </div>
+                <div class="progress" style="height: 10px;">
+                  <div class="progress-bar bg-primary" style="width: 100%;"></div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <div class="d-flex justify-content-between small fw-bold mb-1">
+                  <span>Previous Exam Marks</span>
+                  <span>Importance: 0.260</span>
+                </div>
+                <div class="progress" style="height: 10px;">
+                  <div class="progress-bar bg-info" style="width: 94%;"></div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <div class="d-flex justify-content-between small fw-bold mb-1">
+                  <span>Assignment Average Score</span>
+                  <span>Importance: 0.068</span>
+                </div>
+                <div class="progress" style="height: 10px;">
+                  <div class="progress-bar bg-success" style="width: 25%;"></div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <div class="d-flex justify-content-between small fw-bold mb-1">
+                  <span>Class Attendance Rate</span>
+                  <span>Importance: 0.068</span>
+                </div>
+                <div class="progress" style="height: 10px;">
+                  <div class="progress-bar bg-warning" style="width: 25%;"></div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <div class="d-flex justify-content-between small fw-bold mb-1">
+                  <span>Home Internet Access</span>
+                  <span>Importance: 0.046</span>
+                </div>
+                <div class="progress" style="height: 10px;">
+                  <div class="progress-bar bg-secondary" style="width: 17%;"></div>
+                </div>
+              </div>
+
+              <div class="alert alert-info py-2 px-3 small mt-3 mb-0">
+                <i class="bi bi-info-circle-fill me-1"></i> <strong>Takeaway:</strong> Academic persistence (study hours &amp; attendance) and formative preparation (assignments) outweigh socioeconomic background in determining final scores.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function updateVal(key, val, unit) {
+      document.getElementById('val_' + key).innerText = val + unit;
+    }
+
+    async function runPrediction() {
+      const form = document.getElementById('predictionForm');
+      const formData = new FormData(form);
+      const data = {};
+      
+      formData.forEach((value, key) => {
+        data[key] = isNaN(value) ? value : parseFloat(value);
+      });
+
+      try {
+        const response = await fetch('/api/predict', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          const res = result.data;
+          document.getElementById('displayScore').innerText = res.predicted_score;
+          
+          const tierEl = document.getElementById('displayTier');
+          tierEl.innerText = res.tier + ' (' + res.status + ')';
+          tierEl.className = 'badge badge-tier bg-' + res.badge;
+          
+          document.getElementById('rangeText').innerText = res.prediction_interval_95[0] + ' - ' + res.prediction_interval_95[1] + ' marks';
+          
+          const recList = document.getElementById('recommendationsList');
+          recList.innerHTML = '';
+          res.recommendations.forEach(rec => {
+            const li = document.createElement('li');
+            li.className = 'list-group-item';
+            li.innerHTML = '<i class="bi bi-check2-circle text-primary me-2"></i>' + rec;
+            recList.appendChild(li);
+          });
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Error connecting to prediction server.');
+      }
+    }
+
+    // Run prediction once on initial page load
+    window.addEventListener('DOMContentLoaded', () => {
+      runPrediction();
+    });
+  </script>
+</body>
+</html>

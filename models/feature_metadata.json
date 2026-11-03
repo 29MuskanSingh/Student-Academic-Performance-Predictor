@@ -1,0 +1,116 @@
+{
+  "permutation_importance": [
+    {
+      "feature": "study_hours_weekly",
+      "importance": 0.276365073042793
+    },
+    {
+      "feature": "previous_exam_marks",
+      "importance": 0.2604569831429107
+    },
+    {
+      "feature": "assignment_avg_score",
+      "importance": 0.0680335011663435
+    },
+    {
+      "feature": "attendance_rate",
+      "importance": 0.0677683925015377
+    },
+    {
+      "feature": "internet_access",
+      "importance": 0.04643009138276253
+    },
+    {
+      "feature": "parent_education_level",
+      "importance": 0.03205947713252598
+    },
+    {
+      "feature": "stress_level",
+      "importance": 0.028111342950254394
+    },
+    {
+      "feature": "tutoring_support",
+      "importance": 0.023267055932319466
+    },
+    {
+      "feature": "class_participation_score",
+      "importance": 0.021578080485016606
+    },
+    {
+      "feature": "assignment_completion_rate",
+      "importance": 0.0046523578316640295
+    },
+    {
+      "feature": "extracurricular_activities",
+      "importance": 0.00189836831599098
+    },
+    {
+      "feature": "sleep_hours_daily",
+      "importance": 0.0004962884180096753
+    }
+  ],
+  "linear_coefficients": [
+    {
+      "feature": "internet_access_Yes",
+      "coefficient": 3.9826768447886707
+    },
+    {
+      "feature": "previous_exam_marks",
+      "coefficient": 3.8650712182025915
+    },
+    {
+      "feature": "study_hours_weekly",
+      "coefficient": 3.74082657320319
+    },
+    {
+      "feature": "tutoring_support_Yes",
+      "coefficient": 2.4588800699334437
+    },
+    {
+      "feature": "assignment_avg_score",
+      "coefficient": 1.9966493799957639
+    },
+    {
+      "feature": "attendance_rate",
+      "coefficient": 1.9075115987764768
+    },
+    {
+      "feature": "stress_level",
+      "coefficient": -1.5613088028257391
+    },
+    {
+      "feature": "parent_education_level",
+      "coefficient": 1.3327869767133533
+    },
+    {
+      "feature": "class_participation_score",
+      "coefficient": 1.1520129008152808
+    },
+    {
+      "feature": "extracurricular_activities_Yes",
+      "coefficient": 0.8404716775793264
+    },
+    {
+      "feature": "assignment_completion_rate",
+      "coefficient": 0.38973883592450165
+    },
+    {
+      "feature": "sleep_hours_daily",
+      "coefficient": 0.18897392905021343
+    }
+  ],
+  "transformed_feature_names": [
+    "attendance_rate",
+    "study_hours_weekly",
+    "previous_exam_marks",
+    "assignment_completion_rate",
+    "assignment_avg_score",
+    "class_participation_score",
+    "sleep_hours_daily",
+    "parent_education_level",
+    "stress_level",
+    "extracurricular_activities_Yes",
+    "internet_access_Yes",
+    "tutoring_support_Yes"
+  ]
+}
